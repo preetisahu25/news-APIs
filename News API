@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>News App</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>News explorar</h1>
+
+<div id="news-container"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
+const apiKey = "YOUR_API_KEY";
+const url = `https://hn.algolia.com/api/v1/search?query=${topic}
+
+async function getNews() {
+
+    try{
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const articles = data.articles;
+        const container = document.getElementById("news-container");
+
+        articles.forEach(article => {
+
+            const card = document.createElement("div");
+            card.classList.add("news-card");
+
+            card.innerHTML = `
+                <img src="${article.urlToImage}" alt="">
+                <h3>${article.title}</h3>
+                <p>${article.description || "No description available"}</p>
+                <a href="${article.url}" target="_blank">Read More</a>
+            `;
+
+            container.appendChild(card);
+        });
+
+    }catch(error){
+        console.log("Error fetching news:", error);
+    }
+
+}
+
+getNews();
